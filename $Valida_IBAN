@@ -1,0 +1,21 @@
+Calculate lvnChecksum as 0
+If len(pIBAN)<=0
+  Quit method kFalse
+End If
+For lvnLoop from 0 to len(pIBAN)-1 step 1
+  Calculate lvnPosicao as mod(lvnLoop+4,len(pIBAN))
+  Calculate lvcLetra as mid(pIBAN,lvnPosicao+1,lvnPosicao+1)
+  If lvcLetra>='0'&lvcLetra<='9'
+    Calculate lvnValor as lvcLetra-'0'
+  Else If isnumber(lvcLetra)=kFalse
+    Calculate lvnValor as pos(lvcLetra,"ABCDEFGHIJKLMNOPQRSTUVWXYZ")-1
+    Calculate lvnArredonda as int(lvnValor/10)
+    Calculate lvnCalculo as lvnChecksum*10+(lvnArredonda+1)
+    Calculate lvnChecksum as mod(lvnCalculo,97)
+    Calculate lvnValor as mod(lvnValor,10)
+  Else
+    Quit method kFalse
+  End If
+  Calculate lvnChecksum as mod(lvnChecksum*10+lvnValor,97)
+End For
+Quit method lvnChecksum=1
